@@ -15,7 +15,6 @@ async def get_pokemon(name: str) -> dict:
         raw = await pokeapi_client.get_pokemon_raw(name)
         info = transform_pokemon_info(raw)
         return info.model_dump()
-    
     except ValueError as e:
         return {"error": str(e)}
 
@@ -29,7 +28,6 @@ async def get_pokemon_moves(name: str) -> dict:
         raw = await pokeapi_client.get_pokemon_raw(name)
         moves = transform_pokemon_moves(raw)
         return moves.model_dump()
-    
     except ValueError as e:
         return {"error": str(e)}
 
@@ -42,7 +40,6 @@ async def get_move(name: str) -> dict:
         raw = await pokeapi_client.get_move_raw(name)
         info = transform_move_info(raw)
         return info.model_dump()
-    
     except ValueError as e:
         return {"error": str(e)}
 
@@ -55,7 +52,6 @@ async def get_type(name: str) -> dict:
         raw = await pokeapi_client.get_type_raw(name)
         info = transform_type_effectiveness(raw)
         return info.model_dump()
-    
     except ValueError as e:
         return {"error": str(e)}
 
@@ -68,14 +64,14 @@ async def get_ability(name: str) -> dict:
         raw = await pokeapi_client.get_ability_raw(name)
         info = transform_ability_info(raw)
         return info.model_dump()
-    
     except ValueError as e:
         return {"error": str(e)}
 
 @mcp.tool()
-async def list_pokemon(limit: int = 20, offset: int = 0) -> list[str]:
-    """
-    It gets a list of Pokemon names
-    """
-    data = await pokeapi_client.list_pokemon(limit, offset)
-    return [item["name"] for item in data["results"]]
+async def list_pokemon(limit: int = 20, offset: int = 0) -> dict:
+    """Get a list of Pokemon names."""
+    try:
+        data = await pokeapi_client.list_pokemon(limit, offset)
+        return {"pokemon": [item["name"] for item in data["results"]]}
+    except ValueError as e:
+        return {"error": str(e)}
