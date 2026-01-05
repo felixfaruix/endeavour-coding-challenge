@@ -13,7 +13,8 @@ async def lifespan(app: FastAPI):
     It manages the application lifecycle    
     """
     print("Server starting")
-    yield
+    async with mcp.session_manager.run():
+        yield
     print("Server stopping")
     await pokeapi_client.stop()
 
@@ -24,4 +25,4 @@ app = FastAPI(title="MCP Server for PokeAPI", description="MCP server providing 
 async def root():
     return {"status": "MCP Server running", "mcp_endpoint": "/mcp"}
 
-app.mount("/mcp", mcp.streamable_http_app())
+app.mount("", mcp.streamable_http_app())

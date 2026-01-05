@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  mcp-server:
+    build: ./mcp
+    ports:
+      - "8000:8000"
+    container_name: pokemon-mcp-server
+
+  agent-api:
+    build: ./agent-api
+    ports:
+      - "8001:8001"
+    container_name: pokemon-agent-api
+    environment:
+      - mcp_server_url=http://mcp-server:8000
+      - api_key=${api_key}
+      - redis_host=${redis_host}
+      - redis_port=${redis_port}
+      - redis_password=${redis_password}
+    depends_on:
+      - mcp-server
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    container_name: pokemon-redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
