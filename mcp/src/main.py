@@ -5,6 +5,7 @@ Main entry point for the server.
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from .client import pokeapi_client
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from .tools import mcp
 
 @asynccontextmanager
@@ -20,6 +21,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="MCP Server for PokeAPI", description="MCP server providing Pokemon data from PokeAPI",
               version="1.0.0", lifespan=lifespan)
+
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 
 @app.get("/")
 async def root():
