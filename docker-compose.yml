@@ -4,7 +4,7 @@ services:
   agent-api:
     build: ./agent-api
     ports:
-      - "8001:8001"
+      - "8001:8000"
     container_name: pokemon-agent-api
     environment:
       - mcp_server_url=${mcp_server_url}
