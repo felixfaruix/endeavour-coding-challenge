@@ -10,7 +10,7 @@ User → Agent API → Claude AI → MCP Server → PokeAPI
           Redis (conversation memory)
 ```
 
-## Option 1: Run Locally
+## Run locally
 
 ### Setup
 
@@ -43,19 +43,7 @@ Open http://localhost:8001/docs
 
 ---
 
-## Option 2: Docker Compose (uses Azure MCP)
-
-### Configure
-
-Create `.env` in root folder:
-
-```
-api_key=your-anthropic-key
-mcp_server_url=https://pokemon-mcp.bluedesert-5605284f.northeurope.azurecontainerapps.io
-redis_host=your-redis-host
-redis_port=your-redis-port
-redis_password=your-redis-password
-```
+## Docker Compose (uses Azure MCP)
 
 ### Run
 
