@@ -22,10 +22,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="MCP Server for PokeAPI", description="MCP server providing Pokemon data from PokeAPI",
               version="1.0.0", lifespan=lifespan)
 
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
-
 @app.get("/")
 async def root():
     return {"status": "MCP Server running", "mcp_endpoint": "/mcp"}
 
-app.mount("", mcp.streamable_http_app())
+mcp_app = mcp.streamable_http_app()
+mcp_app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
+app.mount("", mcp_app)

@@ -4,7 +4,7 @@ from .transformers import (transform_pokemon_info, transform_pokemon_moves,
                            transform_move_info, transform_type_effectiveness,
                            transform_ability_info)
 
-mcp = FastMCP("MCP Server for PokeAPI")
+mcp = FastMCP("MCP Server for PokeAPI", host = "0.0.0.0")
 
 @mcp.tool()
 async def get_pokemon(name: str) -> dict:

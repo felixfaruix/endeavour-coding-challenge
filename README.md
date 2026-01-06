@@ -2,36 +2,28 @@
 
 AI-powered Pokemon assistant using Claude AI and MCP protocol.
 
-## Quick Start
+## Architecture
 
-### 1. Setup Environment
+```
+User → Agent API → Claude AI → MCP Server → PokeAPI
+            ↓
+          Redis (conversation memory)
+```
+
+## Option 1: Run Locally
+
+### Setup
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # Mac/Linux
+
 pip install -r mcp/requirements.txt
 pip install -r agent-api/requirements.txt
 ```
 
-### 2. Configure
-
-Create `agent-api/.env`:
-
-```
-api_key=your-anthropic-key
-mcp_server_url=http://localhost:8000
-redis_host=localhost
-redis_port=6379
-redis_password=
-```
-
-### 3. Start Redis
-
-```bash
-docker run -d -p 6379:6379 --name redis redis
-```
-
-### 4. Start Servers
+### Start Services
 
 Terminal 1:
 ```bash
@@ -45,23 +37,37 @@ cd agent-api
 uvicorn src.main:app --port 8001
 ```
 
-### 5. Test
+### Test
 
 Open http://localhost:8001/docs
 
-```json
-{
-  "message": "Tell me about Pikachu"
-}
+---
+
+## Option 2: Docker Compose (uses Azure MCP)
+
+### Configure
+
+Create `.env` in root folder:
+
+```
+api_key=your-anthropic-key
+mcp_server_url=https://pokemon-mcp.bluedesert-5605284f.northeurope.azurecontainerapps.io
+redis_host=your-redis-host
+redis_port=your-redis-port
+redis_password=your-redis-password
 ```
 
-## Docker Compose (Alternative)
+### Run
 
 ```bash
-docker-compose up
+docker-compose up --build
 ```
 
-## API
+Open http://localhost:8001/docs
+
+---
+
+## API Usage
 
 **New conversation:**
 ```json
@@ -75,11 +81,13 @@ POST /pokemon_request
 {"message": "What are its weaknesses?", "conversation_id": "from-previous-response"}
 ```
 
-## Tools Available
+## Available Tools
 
-- `get_pokemon` - Pokemon info
-- `get_pokemon_moves` - Move list
-- `get_move` - Move details
-- `get_type` - Type effectiveness
-- `get_ability` - Ability info
-- `list_pokemon` - List Pokemon names
+| Tool | Description |
+|------|-------------|
+| `get_pokemon` | Pokemon info (types, stats, abilities) |
+| `get_pokemon_moves` | List of moves a Pokemon can learn |
+| `get_move` | Move details (power, accuracy, type) |
+| `get_type` | Type effectiveness |
+| `get_ability` | Ability description |
+| `list_pokemon` | List Pokemon names |
